@@ -1,6 +1,6 @@
 const bookingService = require('../services/bookingService');
  
-// Create new booking
+// Create a new booking
 exports.createBooking = async (req, res) => {
   try {
     const {
@@ -13,6 +13,7 @@ exports.createBooking = async (req, res) => {
       requiredEquipment
     } = req.body;
  
+    // Basic validation
     if (!userId || !roomId || !title || !startTime || !endTime || !attendeeCount) {
       return res.status(400).json({
         message: 'Missing required fields'
@@ -35,7 +36,7 @@ exports.createBooking = async (req, res) => {
   }
 };
  
-// Get bookings
+// Get bookings for a user
 exports.getUserBookings = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -46,7 +47,7 @@ exports.getUserBookings = async (req, res) => {
   }
 };
  
-// Get bookings - on specific date
+// Get bookings for a room on a specific date
 exports.getRoomBookings = async (req, res) => {
   try {
     const { roomId } = req.params;
@@ -59,7 +60,7 @@ exports.getRoomBookings = async (req, res) => {
   }
 };
  
-// Get all bookings - on specific date
+// Get all bookings for a specific date
 exports.getAllBookingsForDate = async (req, res) => {
   try {
     const { date } = req.query;
@@ -70,7 +71,7 @@ exports.getAllBookingsForDate = async (req, res) => {
   }
 };
  
-// Cancel booking
+// Cancel a booking
 exports.cancelBooking = async (req, res) => {
   try {
     const { id } = req.params;

@@ -1,33 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const errorHandler = require('./middleware/errorHandler');
- 
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const roomRoutes = require('./routes/roomRoutes');
-const bookingRoutes = require('./routes/bookingRoutes');
- 
-dotenv.config();
- 
-const app = express();
- 
-//middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
- 
-//routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/rooms', roomRoutes);
-app.use('/api/bookings', bookingRoutes);
- 
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Meeting Room Booking API' });
+const app = require('./app');
+const connectDB = require('./config/db');
+require('dotenv').config();
+
+// Connect to MongoDB
+connectDB();
+
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error(`Error starting server: ${err.message}`);
+    return;
+  }
+  console.log(`Server running on port ${PORT}`);
 });
- 
-// Error handler middleware
-app.use(errorHandler);
- 
-module.exports = app;

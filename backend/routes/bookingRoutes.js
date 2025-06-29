@@ -1,54 +1,21 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const userService = require('../services/userService');
-const { generateToken } = require('../utils/tokenUtils');
- 
-// Login user
-exports.loginUser = async (req, res) => {
-  try {
-    const { name, email } = req.body;
- 
-    if (!name || !email) {
-      return res.status(400).json({ message: 'Name and email are required' });
-    }
- 
-    // Create user if doesn't exist or get existing
-    const user = await userService.createUser({ name, email });
- 
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
- 
-// Protect routes
-exports.protect = async (req, res, next) => {
-  let token;
- 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      // Get token from header
-      token = req.headers.authorization.split(' ')[1];
- 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
- 
-      // Get user from token
-      req.user = await User.findById(decoded.id).select('-__v');
- 
-      next();
-    } catch (error) {
-      console.error(error);
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  }
- 
-  if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
-  }
-};
+const express = require('express');
+const router = express.Router();
+const bookingController = require('../controllers/bookingController');
+const { protect } = require('../middleware/authMiddleware');
+
+// Create a new booking
+router.post('/', protect, bookingController.createBooking);
+
+// Get bookings for a user
+router.get('/user/:userId', protect, bookingController.getUserBookings);
+
+// Get bookings for a room
+router.get('/room/:roomId', protect, bookingController.getRoomBookings);
+
+// Get all bookings for a date
+router.get('/', protect, bookingController.getAllBookingsForDate);
+
+// Cancel a booking
+router.put('/cancel/:id', protect, bookingController.cancelBooking);
+
+module.exports = router;
