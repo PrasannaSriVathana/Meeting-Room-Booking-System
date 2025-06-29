@@ -7,16 +7,18 @@ const { generateToken } = require('../utils/tokenUtils');
 exports.loginUser = async (req, res) => {
   try {
     const { name, email } = req.body;
-    console.log(name);
-    console.log(email);
- 
+    console.log(name, email);
+
     if (!name || !email) {
       return res.status(400).json({ message: 'Name and email are required' });
     }
- 
-    // Create user if doesn't exist or get existing
-    const user = await userService.createUser({ name, email });
- 
+
+    const user = await User.findOne({ name, email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
     res.status(200).json({
       _id: user._id,
       name: user.name,
