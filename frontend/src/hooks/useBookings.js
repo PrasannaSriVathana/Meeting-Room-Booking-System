@@ -52,12 +52,12 @@ export const useBookings = () => {
     }
   };
 
-  const cancelBooking = async (bookingId) => {
+  const cancelBooking = async (bookingId, userId) => {
     try {
       setLoading(true);
       setError(null);
       
-      await bookingApi.cancelBooking(bookingId);
+      await bookingApi.cancelBooking(bookingId, userId);
       // Update user bookings list after cancellation
       if (userBookings.length) {
         setUserBookings(userBookings.filter(booking => booking._id !== bookingId));

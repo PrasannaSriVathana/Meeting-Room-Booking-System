@@ -25,9 +25,9 @@ const MyBookings = () => {
     }
   }, [user, fetchUserBookings]);
   
-  const handleCancelBooking = async (bookingId) => {
+  const handleCancelBooking = async (bookingId, userId) => {
     try {
-      await cancelBooking(bookingId);
+      await cancelBooking(bookingId, userId);
       toast.success('Booking cancelled successfully');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to cancel booking');
@@ -144,7 +144,7 @@ const MyBookings = () => {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => handleCancelBooking(booking._id)}
+                          onClick={() => handleCancelBooking(booking._id, user._id)}
                           className="text-red-600 hover:text-red-800"
                         >
                           Cancel Booking
