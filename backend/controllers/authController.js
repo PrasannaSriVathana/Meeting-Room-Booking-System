@@ -7,6 +7,8 @@ const { generateToken } = require('../utils/tokenUtils');
 exports.loginUser = async (req, res) => {
   try {
     const { name, email } = req.body;
+    console.log(name);
+    console.log(email);
  
     if (!name || !email) {
       return res.status(400).json({ message: 'Name and email are required' });
