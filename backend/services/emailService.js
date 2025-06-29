@@ -19,9 +19,9 @@ const sendBookingConfirmation = async (userEmail, bookingDetails) => {
   const mailOptions = {
     from: `"Meeting Room Booking" <${process.env.EMAIL_USERNAME}>`,
     to: userEmail,
-    subject: `✅ Booking Confirmed: ${title}`,
+    subject: `Meeting Room Booking Confirmed: ${title}`,
     html: `
-      <h2>Your booking is confirmed ✅</h2>
+      <h2>Your booking is confirmed </h2>
       <p><strong>Title:</strong> ${title}</p>
       <p><strong>Room:</strong> ${roomName}</p>
       <p><strong>Start Time:</strong> ${new Date(startTime).toLocaleString()}</p>
@@ -32,9 +32,9 @@ const sendBookingConfirmation = async (userEmail, bookingDetails) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('📩 Confirmation email sent to:', userEmail);
+    console.log('Confirmation email sent to:', userEmail);
   } catch (err) {
-    console.error('❌ Failed to send confirmation email:', err.message);
+    console.error('Failed to send confirmation email:', err.message);
     throw new Error('Email not sent');
   }
 };
@@ -45,9 +45,9 @@ const sendCancellationNotification = async (userEmail, bookingDetails) => {
   const mailOptions = {
     from: `"Meeting Room Booking" <${process.env.EMAIL_USERNAME}>`,
     to: userEmail,
-    subject: `❌ Booking Cancelled: ${title}`,
+    subject: `Booking Cancelled: ${title}`,
     html: `
-      <h2>Your booking has been cancelled ❌</h2>
+      <h2>Your booking has been cancelled</h2>
       <p><strong>Title:</strong> ${title}</p>
       <p><strong>Room:</strong> ${roomName}</p>
       <p><strong>Original Start Time:</strong> ${new Date(startTime).toLocaleString()}</p>
@@ -57,9 +57,9 @@ const sendCancellationNotification = async (userEmail, bookingDetails) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('📩 Cancellation email sent to:', userEmail);
+    console.log('Cancellation email sent to:', userEmail);
   } catch (err) {
-    console.error('❌ Failed to send cancellation email:', err.message);
+    console.error('Failed to send cancellation email:', err.message);
     throw new Error('Cancellation email not sent');
   }
 };

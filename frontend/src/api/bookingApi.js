@@ -19,7 +19,7 @@ export const bookingApi = {
   },
   
   cancelBooking: async (bookingId) => {
-    const response = await api.delete(`/bookings/${bookingId}`);
+    const response = await api.put(`/bookings/cancel/${bookingId}`);
     return response.data;
   }
 };

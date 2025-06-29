@@ -6,8 +6,8 @@ export const authApi = {
     return response.data;
   },
   
-  getProfile: async () => {
+  /*getProfile: async () => {
     const response = await api.get('/auth/profile');
     return response.data;
-  }
+  }*/
 };

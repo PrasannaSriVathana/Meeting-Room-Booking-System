@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { roomApi } from '../api/roomApi';
 
 export const useRooms = () => {
@@ -26,7 +26,7 @@ export const useRooms = () => {
     fetchRooms();
   }, []);
 
-  const getRoomById = async (roomId) => {
+  const getRoomById = useCallback(async (roomId) => {
     try {
       setLoading(true);
       setError(null);
@@ -39,7 +39,7 @@ export const useRooms = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const getRoomAvailability = async (roomId, date) => {
     try {

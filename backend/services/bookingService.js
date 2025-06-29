@@ -86,7 +86,7 @@ exports.createBooking = async (bookingData) => {
     await booking.save();
 
     // Send confirmation email
-    await emailService.sendBookingConfirmation(booking, user.email);
+    await emailService.sendBookingConfirmation(user.email, booking);
 
     return booking;
   } catch (error) {

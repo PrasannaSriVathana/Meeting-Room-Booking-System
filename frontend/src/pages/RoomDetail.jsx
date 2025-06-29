@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
@@ -12,7 +12,7 @@ const RoomDetail = () => {
   const navigate = useNavigate();
   const [room, setRoom] = useState(null);
   const [bookings, setBookings] = useState([]);
-  const [currentDate] = useState(new Date());
+  const currentDateRef = useRef(new Date());
   const { getRoomById, loading, error } = useRooms();
   const { fetchRoomBookings } = useBookings();
   const [timeSlots] = useState(generateTimeSlots());
@@ -36,7 +36,7 @@ const RoomDetail = () => {
         setRoom(roomData);
         
         // Format date for API
-        const dateString = format(currentDate, 'yyyy-MM-dd');
+        const dateString = format(currentDateRef.current, 'yyyy-MM-dd');
         const bookingsData = await fetchRoomBookings(id, dateString);
         setBookings(bookingsData);
       } catch (err) {
@@ -46,12 +46,12 @@ const RoomDetail = () => {
     };
     
     loadRoomAndBookings();
-  }, [id, getRoomById, fetchRoomBookings, currentDate]);
+  }, [id, getRoomById, fetchRoomBookings]);
   
   const isTimeSlotBooked = (hour) => {
     if (!bookings.length) return false;
     
-    const hourTime = new Date(currentDate);
+    const hourTime = new Date(currentDateRef.current);
     hourTime.setHours(hour, 0, 0, 0);
     
     return bookings.some(booking => {
@@ -132,7 +132,7 @@ const RoomDetail = () => {
           <div className="mt-8">
             <h2 className="text-lg font-semibold mb-4">Today's Availability</h2>
             <p className="text-gray-600 mb-4">
-              {format(currentDate, 'EEEE, MMMM d, yyyy')}
+              {format(currentDateRef.current, 'EEEE, MMMM d, yyyy')}
             </p>
             
             <div className="overflow-x-auto">

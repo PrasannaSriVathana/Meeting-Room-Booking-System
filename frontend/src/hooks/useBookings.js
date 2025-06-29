@@ -22,7 +22,7 @@ export const useBookings = () => {
     }
   }, []);
 
-  const fetchRoomBookings = async (roomId, date) => {
+  const fetchRoomBookings = useCallback(async (roomId, date) => {
     try {
       setLoading(true);
       setError(null);
@@ -35,8 +35,8 @@ export const useBookings = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  }, []);
+  
   const createBooking = async (bookingData) => {
     try {
       setLoading(true);
